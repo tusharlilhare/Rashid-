@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engineers Ganesh Utsav - Payment</title>
+    <title>Engineers Ganesh Utsav - Payment Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -24,7 +24,7 @@
         
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 1000px;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             overflow: hidden;
@@ -59,6 +59,19 @@
         
         .content {
             padding: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .left-panel {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .right-panel {
+            flex: 1;
+            min-width: 300px;
         }
         
         .form-section {
@@ -182,6 +195,47 @@
             margin-bottom: 10px;
         }
         
+        .qr-section {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #1a2a6c;
+            border-radius: 10px;
+        }
+        
+        .qr-code img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .instructions {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f0f7ff;
+            border-radius: 8px;
+        }
+        
+        .instructions ol {
+            text-align: left;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
         .modal {
             display: none;
             position: fixed;
@@ -249,6 +303,46 @@
             background: #2a3a9c;
         }
         
+        .payment-status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        
+        .status-processing {
+            background: #fff8e1;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .status-success {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+        }
+        
+        .rashid-section {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+        
+        .rashid-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #1a2a6c;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
         @media (max-width: 768px) {
             .form-row {
                 flex-direction: column;
@@ -262,6 +356,10 @@
             .header h1 {
                 font-size: 24px;
             }
+            
+            .content {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -272,67 +370,110 @@
                 <i class="fas fa-university"></i>
             </div>
             <h1>Engineers Ganesh Utsav</h1>
-            <p>Secure Payment Gateway</p>
+            <p>Secure Payment Gateway - Payment for Rashid</p>
         </div>
         
         <div class="content">
-            <div class="form-section">
-                <h2>Payment Details</h2>
+            <div class="left-panel">
+                <div class="form-section">
+                    <h2>Payment Details</h2>
+                    
+                    <form id="payment-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">Amount (₹)</label>
+                                <div class="amount-input">
+                                    <span>₹</span>
+                                    <input type="number" id="amount" placeholder="Enter amount" min="1" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Select Payment Method</label>
+                            <div class="payment-methods">
+                                <div class="payment-method" data-method="upi">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <p>UPI</p>
+                                </div>
+                                <div class="payment-method" data-method="card">
+                                    <i class="fas fa-credit-card"></i>
+                                    <p>Credit/Debit Card</p>
+                                </div>
+                                <div class="payment-method" data-method="netbanking">
+                                    <i class="fas fa-landmark"></i>
+                                    <p>Net Banking</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <input type="hidden" id="selected-method" name="payment-method" required>
+                        
+                        <button type="submit" class="btn">Proceed to Payment</button>
+                    </form>
+                </div>
                 
-                <form id="payment-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" placeholder="Enter your full name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" placeholder="Enter your email" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" placeholder="Enter your phone number" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="amount">Amount (₹)</label>
-                            <div class="amount-input">
-                                <span>₹</span>
-                                <input type="number" id="amount" placeholder="Enter amount" min="1" required>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Select Payment Method</label>
-                        <div class="payment-methods">
-                            <div class="payment-method" data-method="upi">
-                                <i class="fas fa-mobile-alt"></i>
-                                <p>UPI</p>
-                            </div>
-                            <div class="payment-method" data-method="card">
-                                <i class="fas fa-credit-card"></i>
-                                <p>Credit/Debit Card</p>
-                            </div>
-                            <div class="payment-method" data-method="netbanking">
-                                <i class="fas fa-landmark"></i>
-                                <p>Net Banking</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <input type="hidden" id="selected-method" name="payment-method" required>
-                    
-                    <button type="submit" class="btn">Pay Now</button>
-                </form>
+                <div class="address">
+                    <h3>Payment Address</h3>
+                    <p>205, Silicon Valley, Tech Park, Engineering Zone, 462023</p>
+                    <p>After payment, Rashid will verify and confirm your payment</p>
+                </div>
             </div>
             
-            <div class="address">
-                <h3>Payment Address</h3>
-                <p>205, Silicon Valley, Tech Park, Engineering Zone, 462023</p>
-                <p>After payment, please meet Rashid for confirmation</p>
+            <div class="right-panel">
+                <div class="qr-section">
+                    <h2>Scan QR Code to Pay</h2>
+                    <div class="qr-code">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=UPIID:rashid.engineers@oksbi&amp;amount=500&amp;note=GaneshUtsav" alt="QR Code for Payment">
+                    </div>
+                    <p>Scan this QR code with your UPI app to make payment</p>
+                    
+                    <div class="instructions">
+                        <h3>Payment Instructions:</h3>
+                        <ol>
+                            <li>Open your UPI app (Google Pay, PhonePe, Paytm, etc.)</li>
+                            <li>Tap on "Scan QR Code"</li>
+                            <li>Point your camera at the QR code above</li>
+                            <li>Enter the amount and verify payment</li>
+                            <li>Wait for Rashid to confirm your payment</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="payment-status status-processing" id="status-processing">
+                        <i class="fas fa-sync-alt fa-spin"></i>
+                        <p>Payment processing... Waiting for confirmation from Rashid</p>
+                    </div>
+                    
+                    <div class="payment-status status-success" id="status-success">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Payment confirmed by Rashid! Thank you for your payment.</p>
+                    </div>
+                </div>
+                
+                <div class="rashid-section">
+                    <div class="rashid-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="rashid-info">
+                        <h3>Rashid - Payment Verifier</h3>
+                        <p>Will confirm your payment after completion</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -342,7 +483,7 @@
             <i class="fas fa-check-circle"></i>
             <h2>Payment Successful!</h2>
             <p>Thank you for your payment. Your transaction was completed successfully.</p>
-            <p>Please meet Rashid to confirm your payment and complete the process.</p>
+            <p>Rashid has been notified and will verify your payment shortly.</p>
             <button class="modal-btn" id="close-modal">OK</button>
         </div>
     </div>
@@ -368,6 +509,8 @@
         // Form submission
         const paymentForm = document.getElementById('payment-form');
         const successModal = document.getElementById('success-modal');
+        const statusProcessing = document.getElementById('status-processing');
+        const statusSuccess = document.getElementById('status-success');
         
         paymentForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -379,8 +522,19 @@
                 return;
             }
             
-            // Show success modal
-            successModal.style.display = 'flex';
+            // Show processing status
+            statusProcessing.style.display = 'block';
+            
+            // Simulate Rashid confirming payment after 5 seconds
+            setTimeout(() => {
+                statusProcessing.style.display = 'none';
+                statusSuccess.style.display = 'block';
+                
+                // Show success modal after another second
+                setTimeout(() => {
+                    successModal.style.display = 'flex';
+                }, 1000);
+            }, 5000);
         });
         
         // Close modal
@@ -388,12 +542,22 @@
         
         closeModal.addEventListener('click', () => {
             successModal.style.display = 'none';
+            // Reset form
+            paymentForm.reset();
+            paymentMethods.forEach(m => m.classList.remove('selected'));
+            selectedMethodInput.value = '';
+            statusSuccess.style.display = 'none';
         });
         
         // Close modal if clicked outside
         window.addEventListener('click', (e) => {
             if (e.target === successModal) {
                 successModal.style.display = 'none';
+                // Reset form
+                paymentForm.reset();
+                paymentMethods.forEach(m => m.classList.remove('selected'));
+                selectedMethodInput.value = '';
+                statusSuccess.style.display = 'none';
             }
         });
     </script>
